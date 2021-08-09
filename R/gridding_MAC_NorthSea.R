@@ -39,10 +39,10 @@ rm(list = ls())
 # load libraries
 ##################
 
-if(!require(plyr)) install.packages("plyr") ; require(plyr)
+if(!require(tidyverse)) install.packages("plyr") ; require(tidyverse)
 if(!require(sp)) install.packages("sp") ; require(sp)
 if(!require(maptools)) install.packages("maptools") ; require(maptools)
-if(!require(dplyr)) install.packages("dplyr") ; require(dplyr)
+#if(!require(dplyr)) install.packages("dplyr") ; require(dplyr)
 if(!require(maps)) install.packages("maps") ; require(maps)
 if(!require(mapdata)) install.packages("mapdata") ; require(mapdata)
 
@@ -151,8 +151,29 @@ rm( RECT_nsea, RECTall)
 save.image("AEPM_grid_mack_NorthSea.RData") 
 
 
+ ####################################
+####################################
 
 
 
+###updating news rectangles in east part of western component areain 2021
+
+###storing files used until 2021 suveys. 
+
+RECT_p.former<-RECT_p
+RECT.former<-RECT
+
+#Adding the whole area of North Sea
+#Rectangle dimensions:  0.5 degree latitud x 0.5 degree longitude 
+
+# Importing  file of proportion in rectangles area that correspond sea(removing covered area by land from rectangle area)
+# Rectangle area   (cos(RECT$lat*pi/180)*30*1853.2)*30*1853.2 
+
+
+RECT_NS_2021<-read.csv("data/Stat_rect_NS_2021.csv") %>% rename(RECT=HALFST)
+
+write.csv(RECT_nsea_df, "data/RECT_nsea_df.csv", row.names=T)
+
+View(RECT_NS_2021 %>% left_join(RECT))
 
 
