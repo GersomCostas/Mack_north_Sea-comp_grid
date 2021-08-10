@@ -150,9 +150,10 @@ rm( RECT_nsea, RECTall)
 
 save.image("AEPM_grid_mack_NorthSea.RData") 
 
+write.csv(RECT_nsea_df, "data/RECT_nsea_df.csv", row.names=T)
 
  ####################################
-####################################
+####################################2021
 
 
 
@@ -170,10 +171,95 @@ RECT.former<-RECT
 # Rectangle area   (cos(RECT$lat*pi/180)*30*1853.2)*30*1853.2 
 
 
-RECT_NS_2021<-read.csv("data/Stat_rect_NS_2021.csv") %>% rename(RECT=HALFST)
+#choose North Sea rectangles 
+#North sea rectangle dimensions:  0.5 degree latitud x 0.5 degree longitude 
 
-write.csv(RECT_nsea_df, "data/RECT_nsea_df.csv", row.names=T)
+RECT_nsea2021<-RECTall2021%>%filter(lat>=52.75,lon<=8.25)%>%filter(lat<=60.25,lon>=-1.75)%>%droplevels()
 
-View(RECT_NS_2021 %>% left_join(RECT))
+#RECT_west$Area_minus_land<-RECT_west$Area*RECT_west$sea_ratio
+summary(RECT_nsea2021)
+
+RECT_nsea2021_df<-RECT_nsea2021
+
+# standardised name for overlap function
+
+RECT<-RECT_nsea2021
+
+# Covert to Spatial pixel
+
+gridded(RECT_nsea2021) = ~lon+lat
 
 
+# Convert to Spatial Polygon
+
+RECT_p <- as(RECT_nsea2021, "SpatialPolygons")
+
+# PLOTING 
+
+plot(RECT_p)
+
+slotNames(RECT_p)# slot names
+
+
+# Original Rectangle names
+
+row.names(RECT_p) 
+
+
+# Use the spChFIDs() method in maptools to change the  IDs of at least one of your objects to disambiguate them 
+
+RECT_p <- spChFIDs(RECT_p, as.character(RECT_nsea2021@data[, 3]))
+
+row.names(RECT_p) 
+
+
+## join spatialpoligonos ( step by step)
+
+rownames(RECT_nsea2021_df)<-RECT_nsea2021_df$RECT
+
+
+## Projection
+
+proj4string(RECT_p) <- CRS("+proj=longlat   +ellps=WGS84 +datum=WGS84")
+
+RECT_p<-SpatialPolygonsDataFrame(RECT_p, data=RECT_nsea2021_df)
+
+#View grid
+
+plot(RECT_p)
+
+
+
+# ploting land + grid
+
+
+png("images/nsea_survey_grid.png",
+    width = 5, height = 7, units = "in", pointsize = 10,
+    bg = "white", res = 800,
+    type = "cairo-png")
+
+par(mar=c(2,2,2,2) + 0.1)
+
+map(database = "worldHires",   xlim = c(-4,10), ylim = c(50,61),fill=T, type="n")
+
+plot(RECT_p, border="grey",  xlim = c(-4,10), ylim = c(50,61))
+
+degAxis(2, at = c(seq(50,61, by=2)),cex.axis = 0.5,las=2)
+
+degAxis(1, at = c(seq(-4,10, by=2)), cex.axis = 0.5, las=2)
+
+map(database = "worldHires",  xlim = c(-4,10), ylim = c(50,61),fill=T, col="darkgreen",add=T)
+
+title("Mackerel North Sea area grid")
+
+box()
+
+dev.off()
+
+
+
+
+rm( RECT_nsea, RECTall)
+
+
+save.image("AEPM_grid_mack_NorthSea.RData") 
