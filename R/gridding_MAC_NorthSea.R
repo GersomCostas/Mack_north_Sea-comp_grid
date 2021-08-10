@@ -169,15 +169,17 @@ RECT.former<-RECT
 
 # Importing  file of proportion in rectangles area that correspond sea(removing covered area by land from rectangle area)
 # Rectangle area   (cos(RECT$lat*pi/180)*30*1853.2)*30*1853.2 
-
+RECTall2021 <- read.csv("data/MEGS half rectangles.csv")
+summary(RECTall2021)
 
 #choose North Sea rectangles 
 #North sea rectangle dimensions:  0.5 degree latitud x 0.5 degree longitude 
 
-RECT_nsea2021<-RECTall2021%>%filter(lat>=52.75,lon<=8.25)%>%filter(lat<=60.25,lon>=-1.75)%>%droplevels()
+
+RECT_nsea2021<-RECTall2021%>%filter(lat>=52.75,lon<=8.25)%>%filter(lat<=62.75,lon>=-2.25)%>%droplevels() %>% mutate(sea_ratio=replace_na(sea_ratio,1)) %>% unique()
 
 #RECT_west$Area_minus_land<-RECT_west$Area*RECT_west$sea_ratio
-summary(RECT_nsea2021)
+summary(RECT_nsea2021%>%mutate_if( is.character, as.factor))
 
 RECT_nsea2021_df<-RECT_nsea2021
 
@@ -240,11 +242,11 @@ png("images/nsea_survey_grid.png",
 
 par(mar=c(2,2,2,2) + 0.1)
 
-map(database = "worldHires",   xlim = c(-4,10), ylim = c(50,61),fill=T, type="n")
+map(database = "worldHires",   xlim = c(-4,10), ylim = c(50,64),fill=T, type="n")
 
-plot(RECT_p, border="grey",  xlim = c(-4,10), ylim = c(50,61))
+plot(RECT_p, border="grey",  xlim = c(-4,10), ylim = c(50,64))
 
-degAxis(2, at = c(seq(50,61, by=2)),cex.axis = 0.5,las=2)
+degAxis(2, at = c(seq(50,64, by=2)),cex.axis = 0.5,las=2)
 
 degAxis(1, at = c(seq(-4,10, by=2)), cex.axis = 0.5, las=2)
 
