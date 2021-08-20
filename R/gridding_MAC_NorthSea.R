@@ -176,7 +176,7 @@ summary(RECTall2021)
 #North sea rectangle dimensions:  0.5 degree latitud x 0.5 degree longitude 
 
 
-RECT_nsea2021<-RECTall2021%>%filter(lat>=52.75,lon<=8.25)%>%filter(lat<=62.75,lon>=-2.25)%>%droplevels() %>% mutate(sea_ratio=replace_na(sea_ratio,1)) %>% unique()
+RECT_nsea2021<-RECTall2021%>%filter(lat>=52.75,lon<=8.25)%>%filter(lat<=62,lon>=-2.25)%>%droplevels() %>% mutate(sea_ratio=replace_na(sea_ratio,1)) %>% unique()
 
 #RECT_west$Area_minus_land<-RECT_west$Area*RECT_west$sea_ratio
 summary(RECT_nsea2021%>%mutate_if( is.character, as.factor))
