@@ -119,7 +119,7 @@ plot(RECT_p)
 # ploting land + grid
 
 
-png("images/nsea_survey_grid.png",
+png("images/nsea_survey_grid_former.png",
     width = 5, height = 7, units = "in", pointsize = 10,
     bg = "white", res = 800,
     type = "cairo-png")
@@ -252,7 +252,7 @@ degAxis(1, at = c(seq(-4,10, by=2)), cex.axis = 0.5, las=2)
 
 map(database = "worldHires",  xlim = c(-4,10), ylim = c(50,61),fill=T, col="darkgreen",add=T)
 
-title("Mackerel North Sea area grid")
+title("")
 
 box()
 
