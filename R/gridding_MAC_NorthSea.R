@@ -39,7 +39,7 @@ rm(list = ls())
 # load libraries
 ##################
 
-if(!require(tidyverse)) install.packages("plyr") ; require(tidyverse)
+if(!require(tidyverse)) install.packages("tidyverse") ; require(tidyverse)
 if(!require(sp)) install.packages("sp") ; require(sp)
 if(!require(maptools)) install.packages("maptools") ; require(maptools)
 #if(!require(dplyr)) install.packages("dplyr") ; require(dplyr)
@@ -52,7 +52,8 @@ if(!require(mapdata)) install.packages("mapdata") ; require(mapdata)
 # Importing  file of proportion in rectangles area that correspond sea(removing covered area by land from rectangle area)
 # Rectangle area   (cos(RECT$lat*pi/180)*30*1853.2)*30*1853.2 
 
-RECTall <- read.csv("data/rect_searatio_all.csv")
+RECTall_old <- read.csv("data/rect_searatio_all.csv")
+RECTall <- read.csv("data/rect_searatio_all_22.csv")#updated
 
 summary(RECTall)
 
